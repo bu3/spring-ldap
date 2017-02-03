@@ -1,6 +1,6 @@
 spring:
   ldap:
     urls:
-      - ldap://ipdomaincontroller:389
+      - ldap://10.2.1.50:389
 server:
   port: 9080

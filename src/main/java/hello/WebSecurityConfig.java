@@ -28,8 +28,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth
 			.ldapAuthentication()
-				.userDnPatterns("uid={0},ou=people")
+				.userDnPatterns("sAMAccountName={0}")
 				.userSearchBase("DC=interno,DC=regione,DC=lazio,DC=it")
+				.groupSearchBase("DC=interno,DC=regione,DC=lazio,DC=it")
 				.contextSource()
 				.url(url);
 	}
