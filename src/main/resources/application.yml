@@ -2,5 +2,3 @@ spring:
   ldap:
     urls:
       - ldap://10.2.1.50:389
-server:
-  port: 9080
