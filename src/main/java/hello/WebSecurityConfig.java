@@ -2,36 +2,33 @@ package hello;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Value("${spring.ldap.urls[0]}")
-	private String url;
+    @Value("${spring.ldap.urls[0]}")
+    private String url;
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-			.authorizeRequests()
-				.anyRequest().fullyAuthenticated()
-				.and()
-			.formLogin();
-	}
-	
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth
-			.ldapAuthentication()
-				.userDnPatterns("sAMAccountName={0}")
-				.userSearchBase("DC=interno,DC=regione,DC=lazio,DC=it")
-				.groupSearchBase("DC=interno,DC=regione,DC=lazio,DC=it")
-				.contextSource()
-				.url(url);
-	}
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                .anyRequest().fullyAuthenticated()
+                .and()
+                .formLogin();
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(new ActiveDirectoryLdapAuthenticationProvider("regione.lazio.it", url));
+    }
+
 }
