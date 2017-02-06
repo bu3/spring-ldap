@@ -17,6 +17,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${spring.ldap.urls[0]}")
     private String url;
 
+    @Value("${authentication.domain}")
+    private String domain;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -28,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(new ActiveDirectoryLdapAuthenticationProvider("regione.lazio.it", url));
+        auth.authenticationProvider(new ActiveDirectoryLdapAuthenticationProvider("domain", url));
     }
 
 }
